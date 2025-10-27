@@ -1,80 +1,427 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="tk">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hello, Deno</title>
-  <link rel="preload" href="https://demo-styles.deno.deno.net/fonts/Moranga-Regular.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="https://demo-styles.deno.deno.net/fonts/Moranga-Medium.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="preload" href="https://demo-styles.deno.deno.net/fonts/Recursive_Variable.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="https://demo-styles.deno.deno.net/styles.css">
-  <style>
-    img {
-      display: inline-block;
-      vertical-align: middle;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TkmXO - Web Wersiýasy</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            text-align: center;
+            color: #333;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        #menu {
+            margin: 20px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        #game {
+            display: none;
+            margin: 20px auto;
+        }
+        #board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-gap: 5px;
+            margin: 20px auto;
+            width: 310px;
+        }
+        .cell {
+            width: 100px;
+            height: 100px;
+            background-color: white;
+            font-size: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+        }
+        .cell:hover {
+            background-color: #f9f9f9;
+        }
+        #status {
+            font-size: 20px;
+            margin: 10px;
+        }
+        #profile {
+            display: none;
+            margin: 20px;
+            text-align: left;
+            max-width: 400px;
+            margin: 20px auto;
+        }
+        #leaderboard {
+            display: none;
+            margin: 20px;
+            text-align: left;
+            max-width: 400px;
+            margin: 20px auto;
+        }
+        #withdraw {
+            display: none;
+            margin: 20px;
+        }
+        #promocode {
+            display: none;
+            margin: 20px;
+        }
+        #boss {
+            display: none;
+            margin: 20px;
+        }
+        #telegram-link {
+            margin: 20px;
+            font-size: 14px;
+        }
+    </style>
 </head>
-
 <body>
-    <main>
-      <section>
-        <a href="https://deno.com/deploy">
-        </a>
-      <h1>
-        <p>
-          Hello, Deno!
-        </p>
-      </h1>
-      <p>
-        This little example is being served by <a href="https://deno.com/">Deno</a>.
-        You can run it locally or in porduction on <a href="https://deno.com/deploy">Deno Deploy</a> or other hosting platforms.
-      </p>
-      <ul>
-        <li>Run it locally with<code>deno task dev</code></li>
-        <li>Deploy it to <a href="https://deno.com/deploy">Deno Deploy</a> via the CLI by running<code>deno deploy</code></li>
-        <li>Run it locally and share it publically by running <code>deno deploy --connected</code></li>
-      </ul>
-    </section>
-      <hr>
-    <section>
-      <h2>What's next?</h2>
-      <p>
-        You can clone this example and deploy it to Deno Deploy in just a few clicks
-        <a href="https://app.deno.com/new?clone=https://github.com/denoland/examples&path=hello-world"><img src="https://deno.com/button" alt="Deploy on Deno"/></a>
-      </p>
-      <ul>
-        <li>
-          <a href="https://docs.deno.com/examples">More examples in the Deno Docs</a>
-        </li>
-        <li>
-          <a href="https://deno.com/deploy">Deno Deploy Early Access</a>
-        </li>
-      </ul>
-    </section>
-    </main>
-    <hr>
-    <footer>
-      <section>
-      <ul class="flex-btwn">
-        <li>
-          <a href="https://deno.com">BlueSky</a>
-        </li>
-        <li>
-          <a href="https://deno.com">Twitter</a>
-        </li>
-        <li>
-          <a href="https://deno.com">YouTube</a>
-        </li>
-        <li>
-          <a href="https://deno.com">Newsletter</a>
-        </li>
-        <li>
-          <a href="https://deno.com">Deno</a>
-        </li>
-      </ul>
-      </section>
-    </footer>
+    <h1>TkmXO - Web Wersiýasy</h1>
+    <p>Bu web wersiýa Telegram boty bilen integrirlenen. Oýun üçin Telegram botyna geçiň: <a href="https://t.me/TkmXOBot" target="_blank">@TkmXOBot</a></p>
+    <div id="menu">
+        <button onclick="startBattle('pvp')">⚔️ Kubok söweş (Ýerli PvP)</button>
+        <button onclick="startBattle('trophy')">🏆 TMT söweş (Ýerli PvP)</button>
+        <button onclick="startBossBattle()">🤖 Boss söweş (vs AI)</button>
+        <button onclick="enterPromocode()">🎟️ Promokod</button>
+        <button onclick="showProfile()">📊 Profil</button>
+        <button onclick="showLeaderboard()">🏅 Liderler</button>
+        <button onclick="showWithdraw()">💸 Puly çekmek</button>
+    </div>
+
+    <div id="game">
+        <div id="status"></div>
+        <div id="board"></div>
+        <button onclick="resetGame()">Täzeden başla</button>
+        <button onclick="backToMenu()">Menu</button>
+    </div>
+
+    <div id="profile"></div>
+
+    <div id="leaderboard"></div>
+
+    <div id="withdraw">
+        <p>Çykarmak isleýän TMT mukdary giriziň (minimal 5 TMT):</p>
+        <input type="number" id="withdraw-amount" min="5">
+        <p>Telefon nomeriňizi giriziň:</p>
+        <input type="text" id="withdraw-phone">
+        <button onclick="submitWithdraw()">Çykar</button>
+        <button onclick="backToMenu()">Ýap</button>
+    </div>
+
+    <div id="promocode">
+        <p>Promokody giriziň:</p>
+        <input type="text" id="promo-input">
+        <button onclick="submitPromocode()">Giriz</button>
+        <button onclick="backToMenu()">Ýap</button>
+    </div>
+
+    <div id="boss">
+        <p>Boss adyny giriziň:</p>
+        <input type="text" id="boss-input">
+        <button onclick="submitBoss()">Giriz</button>
+        <button onclick="backToMenu()">Ýap</button>
+    </div>
+
+    <div id="telegram-link">
+        <p>Bot bilen tolyk integrasiýa üçin Telegramda oýnaň.</p>
+    </div>
+
+    <script>
+        // Profile data using localStorage (simulating KV)
+        function getProfile() {
+            const profile = JSON.parse(localStorage.getItem('profile')) || {
+                trophies: 0,
+                tmt: 0,
+                gamesPlayed: 0,
+                wins: 0,
+                losses: 0,
+                draws: 0,
+                referrals: 0
+            };
+            return profile;
+        }
+
+        function updateProfile(delta) {
+            const profile = getProfile();
+            Object.keys(delta).forEach(key => {
+                if (key === 'tmt' || key === 'trophies') {
+                    profile[key] = Math.max(0, (profile[key] || 0) + delta[key]);
+                } else {
+                    profile[key] = (profile[key] || 0) + delta[key];
+                }
+            });
+            localStorage.setItem('profile', JSON.stringify(profile));
+        }
+
+        // Game logic ported from bot
+        let board = [];
+        let turn = 'X';
+        let marks = { player1: 'X', player2: 'O' };
+        let mode = 'pvp'; // 'pvp' or 'ai'
+        let round = 1;
+        let rounds = 3;
+        let roundWins = { player1: 0, player2: 0 };
+        let isAI = false;
+        let aiMark = 'O';
+        let humanMark = 'X';
+
+        function createEmptyBoard() {
+            return Array(9).fill('');
+        }
+
+        function checkWin(board) {
+            const lines = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8],
+                [0, 3, 6], [1, 4, 7], [2, 5, 8],
+                [0, 4, 8], [2, 4, 6]
+            ];
+            for (const [a, b, c] of lines) {
+                if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+                    return { winner: board[a], line: [a, b, c] };
+                }
+            }
+            if (board.every(c => c !== '')) return { winner: 'draw' };
+            return null;
+        }
+
+        function minimax(newBoard, player, aiMark, humanMark) {
+            const availSpots = newBoard.map((val, idx) => val === '' ? idx : null).filter(v => v !== null);
+            const result = checkWin(newBoard);
+            if (result?.winner === aiMark) return { score: 10 };
+            if (result?.winner === humanMark) return { score: -10 };
+            if (result?.winner === 'draw') return { score: 0 };
+
+            const moves = [];
+            for (const index of availSpots) {
+                newBoard[index] = player;
+                const score = minimax(newBoard, player === aiMark ? humanMark : aiMark, aiMark, humanMark).score;
+                moves.push({ index, score });
+                newBoard[index] = '';
+            }
+
+            let bestMove;
+            if (player === aiMark) {
+                let bestScore = -Infinity;
+                for (const move of moves) {
+                    if (move.score > bestScore) {
+                        bestScore = move.score;
+                        bestMove = move;
+                    }
+                }
+            } else {
+                let bestScore = Infinity;
+                for (const move of moves) {
+                    if (move.score < bestScore) {
+                        bestScore = move.score;
+                        bestMove = move;
+                    }
+                }
+            }
+            return bestMove || { score: 0 };
+        }
+
+        function computerMove(board, aiMark, humanMark) {
+            const result = minimax([...board], aiMark, aiMark, humanMark);
+            return result.index ?? -1;
+        }
+
+        function renderBoard() {
+            const boardDiv = document.getElementById('board');
+            boardDiv.innerHTML = '';
+            board.forEach((cell, i) => {
+                const div = document.createElement('div');
+                div.className = 'cell';
+                div.textContent = cell === 'X' ? '❌' : cell === 'O' ? '⭕' : '';
+                if (cell === '') {
+                    div.onclick = () => makeMove(i);
+                }
+                boardDiv.appendChild(div);
+            });
+        }
+
+        function updateStatus(text) {
+            document.getElementById('status').innerHTML = text;
+        }
+
+        function makeMove(idx) {
+            if (board[idx] !== '' || turn !== humanMark) return;
+            board[idx] = humanMark;
+            const result = checkWin(board);
+            if (result) {
+                handleRoundEnd(result);
+                return;
+            }
+            turn = aiMark;
+            updateStatus("AI hereketi...");
+            renderBoard();
+            setTimeout(() => aiMove(), 500);
+        }
+
+        function aiMove() {
+            const idx = computerMove(board, aiMark, humanMark);
+            if (idx === -1) return;
+            board[idx] = aiMark;
+            const result = checkWin(board);
+            if (result) {
+                handleRoundEnd(result);
+                return;
+            }
+            turn = humanMark;
+            updateStatus("Seniň hereketiň");
+            renderBoard();
+        }
+
+        function handleRoundEnd(result) {
+            let winner = result.winner;
+            if (winner === 'draw') {
+                updateStatus('🤝 Deňlik!');
+                updateProfile({ gamesPlayed: 1, draws: 1 });
+            } else {
+                updateStatus(winner === humanMark ? '🎉 Siz ýeňdiňiz!' : '😢 Siz utuldyňyz.');
+                if (winner === humanMark) {
+                    updateProfile({ gamesPlayed: 1, wins: 1, trophies: mode === 'trophy' ? 0 : 1, tmt: mode === 'trophy' ? 0.75 : 0 });
+                } else {
+                    updateProfile({ gamesPlayed: 1, losses: 1, trophies: mode === 'trophy' ? 0 : -1, tmt: mode === 'trophy' ? -1 : 0 });
+                }
+            }
+            renderBoard(); // Disable clicks implicitly since cells have no onclick if filled
+            if (mode !== 'ai') {
+                // For PvP, handle manually
+            }
+        }
+
+        function startBattle(battleMode) {
+            mode = battleMode;
+            isAI = false; // For PvP, but local, so alternate turns manually
+            document.getElementById('menu').style.display = 'none';
+            document.getElementById('game').style.display = 'block';
+            resetGame();
+            updateStatus('Seniň hereketiň (X)');
+            alert('Ýerli PvP: Öň hereket X, soňra O. Online multiplayer ýok, bot arkaly oýnaň.');
+        }
+
+        function startBossBattle() {
+            mode = 'ai';
+            isAI = true;
+            aiMark = 'O';
+            humanMark = 'X';
+            turn = humanMark;
+            document.getElementById('menu').style.display = 'none';
+            document.getElementById('game').style.display = 'block';
+            resetGame();
+            updateStatus('Seniň hereketiň');
+        }
+
+        function resetGame() {
+            board = createEmptyBoard();
+            turn = 'X';
+            renderBoard();
+            updateStatus('Oýun başlady!');
+        }
+
+        function backToMenu() {
+            document.getElementById('game').style.display = 'none';
+            document.getElementById('profile').style.display = 'none';
+            document.getElementById('leaderboard').style.display = 'none';
+            document.getElementById('withdraw').style.display = 'none';
+            document.getElementById('promocode').style.display = 'none';
+            document.getElementById('boss').style.display = 'none';
+            document.getElementById('menu').style.display = 'block';
+        }
+
+        function showProfile() {
+            const profile = getProfile();
+            const winRate = profile.gamesPlayed ? ((profile.wins / profile.gamesPlayed) * 100).toFixed(1) : 0;
+            const html = `
+                <h2>Profil</h2>
+                <p>🏆 Kuboklar: ${profile.trophies}</p>
+                <p>💰 TMT Balans: ${profile.tmt}</p>
+                <p>🎲 Oýnalan oýunlar: ${profile.gamesPlayed}</p>
+                <p>✅ Ýeňişler: ${profile.wins} | ❌ Utulyşlar: ${profile.losses} | 🤝 Deňlikler: ${profile.draws}</p>
+                <p>📈 Ýeňiş göterimi: ${winRate}%</p>
+                <p>👥 Referallar: ${profile.referrals}</p>
+                <button onclick="backToMenu()">Ýap</button>
+            `;
+            document.getElementById('profile').innerHTML = html;
+            document.getElementById('menu').style.display = 'none';
+            document.getElementById('profile').style.display = 'block';
+        }
+
+        function showLeaderboard() {
+            // Static leaderboard since no backend
+            const html = `
+                <h2>Liderler</h2>
+                <p>1. Oýunçy1 — 🏆 2000</p>
+                <p>2. Oýunçy2 — 🏆 1500</p>
+                <p>3. Oýunçy3 — 🏆 1000</p>
+                <p>(Toluk liderler botda)</p>
+                <button onclick="backToMenu()">Ýap</button>
+            `;
+            document.getElementById('leaderboard').innerHTML = html;
+            document.getElementById('menu').style.display = 'none';
+            document.getElementById('leaderboard').style.display = 'block';
+        }
+
+        function showWithdraw() {
+            document.getElementById('menu').style.display = 'none';
+            document.getElementById('withdraw').style.display = 'block';
+        }
+
+        function submitWithdraw() {
+            const amount = parseFloat(document.getElementById('withdraw-amount').value);
+            const phone = document.getElementById('withdraw-phone').value;
+            const profile = getProfile();
+            if (amount < 5 || profile.tmt < amount) {
+                alert('Ýeterlik TMT ýok ýa-da minimal 5 TMT.');
+                return;
+            }
+            updateProfile({ tmt: -amount });
+            alert(`Çykarma islegi: ${amount} TMT, Telefon: ${phone}. Bot arkaly täsdiKleň.`);
+            backToMenu();
+        }
+
+        function enterPromocode() {
+            document.getElementById('menu').style.display = 'none';
+            document.getElementById('promocode').style.display = 'block';
+        }
+
+        function submitPromocode() {
+            const code = document.getElementById('promo-input').value;
+            // Simulate promocode (e.g., 'test' gives 1 TMT)
+            if (code === 'test') {
+                updateProfile({ tmt: 1 });
+                alert('✅ +1 TMT!');
+            } else {
+                alert('❌ Nädogry promokod.');
+            }
+            backToMenu();
+        }
+
+        function submitBoss() {
+            const name = document.getElementById('boss-input').value;
+            if (name) {
+                startBossBattle();
+            } else {
+                alert('Boss ady giriziň.');
+            }
+        }
+    </script>
 </body>
 </html>
